@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scheduler/Screens/login_screen.dart';
 import 'package:scheduler/Screens/mypage_screen.dart';
+import 'package:scheduler/Screens/passwordEdit_screen.dart';
 import 'package:scheduler/Screens/profileEdit_screen.dart';
 import 'package:scheduler/Screens/profile_screen.dart';
 
@@ -22,7 +23,8 @@ class MyApp extends StatelessWidget {
       //home: const LoginScreen(),
       //home: const MypageScreen(),
       //home: const ProfileScreen(),
-      home: const ProfileEditScreen(),
+      //home: const ProfileEditScreen(),
+      home: const PasswordEditScreen(),
     );
   }
 }

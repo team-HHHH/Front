@@ -169,6 +169,41 @@ Widget grayTextButton(String name, String url) {
   );
 }
 
+Widget grayInputLong(TextEditingController controller, String hintText,
+    BuildContext context, bool passwd) {
+  return Container(
+      //width: double.infinity,
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: 40,
+      child: TextFormField(
+          obscureText: passwd,
+          controller: controller,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 14,
+          ),
+          decoration: InputDecoration(
+              hintText: hintText,
+              contentPadding: const EdgeInsets.fromLTRB(15, 0, 0, 5),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+                borderSide:
+                    const BorderSide(color: Colors.grey), // 비활성화 상태의 테두리 색상
+              ),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25),
+                  borderSide:
+                      const BorderSide(color: Colors.grey) // 활성화 상태의 테두리 색상
+                  ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+                borderSide: BorderSide(
+                  color: Theme.of(context).primaryColor,
+                  width: 2.0,
+                ), // 포커스 상태에서 테두리 색상
+              ))));
+}
+
 Widget grayInputLongWithSearch(
     TextEditingController controller, String hintText, BuildContext context) {
   return Container(
