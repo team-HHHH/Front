@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,7 +17,38 @@ class _LoginScreenState extends State<LoginScreen> {
   String _enteredPassword = "";
 
   // 로그인 버튼 누를 시 수행.
-  void handleLogin() {}
+  void handleLogin() async {
+    final url = Uri.parse("");
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(
+        <String, String>{
+          "loginId": _enteredId,
+          "password": _enteredPassword,
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+      // result 객체 추출
+      final Map<String, dynamic> result = responseData['result'];
+      final int resultCode = result['resultCode'];
+      final String resultMessage = result['resultMessage'];
+
+      // body 객체 추출
+      final Map<String, dynamic> body = responseData['body'];
+      final String isFirstLogin = body['isFirstLogin'];
+
+      final headers = response.headers;
+      final accessToken = headers["Authorization"];
+      final refreshToken = headers["refresh"];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
