@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:scheduler/Screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,36 +18,36 @@ class _LoginScreenState extends State<LoginScreen> {
   String _enteredPassword = "";
 
   // 로그인 버튼 누를 시 수행.
-  void _handleLogin() async {
-    final url = Uri.parse("");
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(
-        <String, String>{
-          "loginId": _enteredId,
-          "password": _enteredPassword,
-        },
-      ),
-    );
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
+  Future<void> _handleLogin() async {
+    //final url = Uri.parse("");
+    // final response = await http.post(
+    //   url,
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: jsonEncode(
+    //     <String, String>{
+    //       "loginId": _enteredId,
+    //       "password": _enteredPassword,
+    //     },
+    //   ),
+    // );
+    // if (response.statusCode == 200) {
+    //   final Map<String, dynamic> responseData = jsonDecode(response.body);
 
-      // result 객체 추출
-      final Map<String, dynamic> result = responseData['result'];
-      final int resultCode = result['resultCode'];
-      final String resultMessage = result['resultMessage'];
+    //   // result 객체 추출
+    //   final Map<String, dynamic> result = responseData['result'];
+    //   final int resultCode = result['resultCode'];
+    //   final String resultMessage = result['resultMessage'];
 
-      // body 객체 추출
-      final Map<String, dynamic> body = responseData['body'];
-      final String isFirstLogin = body['isFirstLogin'];
+    //   // body 객체 추출
+    //   final Map<String, dynamic> body = responseData['body'];
+    //   final String isFirstLogin = body['isFirstLogin'];
 
-      final headers = response.headers;
-      final accessToken = headers["Authorization"];
-      final refreshToken = headers["refresh"];
-    }
+    //   final headers = response.headers;
+    //   final accessToken = headers["Authorization"];
+    //   final refreshToken = headers["refresh"];
+    // }
   }
 
   @override
@@ -177,6 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {
                         _formKey.currentState!.save();
                         // 아이디, 비밀번호 형식 검사 로직 추가 해야함.
+
                         _handleLogin();
                       },
                       style: TextButton.styleFrom(
@@ -203,7 +205,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.all(0),
                     splashFactory: NoSplash.splashFactory,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const RegisterScreen(),
+                      ),
+                    );
+                  },
                   child: const Text(
                     "회원가입",
                     style: TextStyle(
