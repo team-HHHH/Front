@@ -12,47 +12,9 @@ class MypageScreen extends StatefulWidget {
 }
 
 class _MypageScreenState extends State<MypageScreen> {
-  final _formKey = GlobalKey<FormState>(); // Form 위젯을 위해 사용.
-
-  String _enteredId = "";
-  String _enteredPassword = "";
   String _userImg = "assets/images/DefaultProfile.png";
   String _userNickName = "준혁이형 후계자";
   String _userEmail = "baejh724@gmail.com";
-
-  // 로그인 버튼 누를 시 수행.
-  void handleLogin() async {
-    final url = Uri.parse("");
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(
-        <String, String>{
-          "loginId": _enteredId,
-          "password": _enteredPassword,
-        },
-      ),
-    );
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-
-      // result 객체 추출
-      final Map<String, dynamic> result = responseData['result'];
-      final int resultCode = result['resultCode'];
-      final String resultMessage = result['resultMessage'];
-
-      // body 객체 추출
-      final Map<String, dynamic> body = responseData['body'];
-      final String isFirstLogin = body['isFirstLogin'];
-
-      final headers = response.headers;
-      final accessToken = headers["Authorization"];
-      final refreshToken = headers["refresh"];
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

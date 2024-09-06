@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scheduler/Screens/login_screen.dart';
 import 'package:scheduler/Screens/mypage_screen.dart';
+import 'package:scheduler/Screens/profile_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //home: const LoginScreen(),
-      home: const MypageScreen(),
+      //home: const MypageScreen(),
+      home: const ProfileScreen(),
     );
   }
 }
