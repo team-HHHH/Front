@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../ConfigJH.dart';
+import './Webview.dart';
 
 // Custom GestureDetector with Row
 Widget profileNaviBar(String text, String gotos) {
@@ -118,41 +120,7 @@ AppBar topBarDefault(String text, String buttonName, String gotoUrl) {
                 fontSize: 12,
               ),
             )),
-      ]
-      /*
-    Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Icon(
-          Icons.arrow_back,
-          size: 20,
-          color: Color(SSU_BLUE),
-        ),
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            text,
-            style: const TextStyle(
-              color: Color(SSU_BLUE),
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        TextButton(
-          onPressed: () {
-            debugPrint("tapbar " + gotoUrl + "로 이동합니다");
-          },
-          child: Text(buttonName),
-          style: TextButton.styleFrom(
-            backgroundColor: null,
-          ),
-        ),
-      ],
-    ),
-    */
-      );
+      ]);
 }
 
 Widget keyValueText(String key, String value) {
@@ -199,4 +167,82 @@ Widget grayTextButton(String name, String url) {
       ),
     ),
   );
+}
+
+Widget grayInputLongWithSearch(
+    TextEditingController controller, String hintText, BuildContext context) {
+  return Container(
+      //width: double.infinity,
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: 40,
+      child: TextFormField(
+          controller: controller,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 14,
+          ),
+          decoration: InputDecoration(
+              hintText: hintText,
+              contentPadding: const EdgeInsets.fromLTRB(15, 0, 0, 5),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+                borderSide:
+                    const BorderSide(color: Colors.grey), // 비활성화 상태의 테두리 색상
+              ),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25),
+                  borderSide:
+                      const BorderSide(color: Colors.grey) // 활성화 상태의 테두리 색상
+                  ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+                borderSide: BorderSide(
+                  color: Theme.of(context).primaryColor,
+                  width: 2.0,
+                ), // 포커스 상태에서 테두리 색상
+              ),
+              suffixIcon: IconButton(
+                  icon: const Icon(
+                    Icons.search,
+                    color: Color(SSU_BLUE),
+                  ),
+                  onPressed: () {
+                    debugPrint("web view");
+                    //showAddressSearchDialog(context);
+                  }))));
+}
+
+Widget grayInput(
+    TextEditingController controller, String hintText, BuildContext context) {
+  return Container(
+      //width: double.infinity,
+      width: MediaQuery.of(context).size.width * 0.6,
+      height: 40,
+      child: TextFormField(
+          controller: controller,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 14,
+          ),
+          decoration: InputDecoration(
+            hintText: hintText,
+            contentPadding: const EdgeInsets.fromLTRB(15, 0, 0, 5),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide:
+                  const BorderSide(color: Colors.grey), // 비활성화 상태의 테두리 색상
+            ),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+                borderSide:
+                    const BorderSide(color: Colors.grey) // 활성화 상태의 테두리 색상
+                ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: BorderSide(
+                color: Theme.of(context).primaryColor,
+                width: 2.0,
+              ), // 포커스 상태에서 테두리 색상
+            ),
+          )));
 }

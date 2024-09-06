@@ -84,6 +84,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             //구분 선 두는겨
             profileNaviBar("비밀번호 변경", "/change/password"),
 
+            /************* 부가정보  *************/
+
             Container(
               height: 30,
             ), //Margin
