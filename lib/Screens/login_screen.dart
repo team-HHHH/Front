@@ -17,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String _enteredPassword = "";
 
   // 로그인 버튼 누를 시 수행.
-  void handleLogin() async {
+  void _handleLogin() async {
     final url = Uri.parse("");
     final response = await http.post(
       url,
@@ -31,7 +31,6 @@ class _LoginScreenState extends State<LoginScreen> {
         },
       ),
     );
-
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = jsonDecode(response.body);
 
@@ -177,6 +176,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: TextButton(
                       onPressed: () {
                         _formKey.currentState!.save();
+                        // 아이디, 비밀번호 형식 검사 로직 추가 해야함.
+                        _handleLogin();
                       },
                       style: TextButton.styleFrom(
                         splashFactory: NoSplash.splashFactory,
