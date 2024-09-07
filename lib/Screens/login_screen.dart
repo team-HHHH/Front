@@ -1,7 +1,5 @@
-import 'dart:convert';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:scheduler/Screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -18,8 +16,8 @@ class _LoginScreenState extends State<LoginScreen> {
   String _enteredPassword = "";
 
   // 로그인 버튼 누를 시 수행.
-  Future<void> _handleLogin() async {
-    //final url = Uri.parse("");
+  void _handleLogin() async {
+    // final url = Uri.parse("");
     // final response = await http.post(
     //   url,
     //   headers: {
@@ -54,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0), // 구분선의 두께
           child: Divider(
@@ -207,7 +206,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(
+                      CupertinoPageRoute(
                         builder: (context) => const RegisterScreen(),
                       ),
                     );
