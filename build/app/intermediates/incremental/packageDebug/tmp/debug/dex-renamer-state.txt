@@ -1,0 +1,4 @@
+#Sat Sep 07 16:37:05 KST 2024
+base.0=C\:\\Users\\leejoonhyeock\\Desktop\\scheduler\\Front\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
