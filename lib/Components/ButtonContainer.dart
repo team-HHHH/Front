@@ -37,7 +37,7 @@ class _BlueButtonState extends State<BlueButton> {
             Container(
               width: MediaQuery.of(context).size.width * 0.02,
             ), //margin
-            Container(
+            SizedBox(
               width: MediaQuery.of(context).size.width * 0.23,
               height: 40,
               child: ElevatedButton(
@@ -70,7 +70,7 @@ class _BlueButtonState extends State<BlueButton> {
           ],
         ),
         if (isCheck == 1)
-          Container(
+          SizedBox(
               height: 30,
               child: Text(
                 widget.type1,
@@ -80,7 +80,7 @@ class _BlueButtonState extends State<BlueButton> {
                     fontWeight: FontWeight.bold),
               ))
         else if (isCheck == 2)
-          Container(
+          SizedBox(
             height: 30,
             child: Text(
               widget.type2,

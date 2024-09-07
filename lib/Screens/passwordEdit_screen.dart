@@ -20,6 +20,7 @@ class _PasswordEditScreenState extends State<PasswordEditScreen> {
   final TextEditingController _newpw2 = TextEditingController();
 
   // 상태를 저장할 변수
+  bool _input_not_empty = false;
   bool _passwordsMatch = true;
 
   @override
@@ -33,7 +34,7 @@ class _PasswordEditScreenState extends State<PasswordEditScreen> {
 
   void _checkPasswordsMatch() {
     setState(() {
-      debugPrint("변경되는중..");
+      _input_not_empty = _newpw1.text.isNotEmpty && _newpw2.text.isNotEmpty;
       _passwordsMatch = _newpw1.text == _newpw2.text;
     });
   }
@@ -120,30 +121,31 @@ class _PasswordEditScreenState extends State<PasswordEditScreen> {
             Container(
               height: 20, //마진
             ),
-            if (!_passwordsMatch)
-              Container(
-                height: 20,
-                child: const Text(
-                  "동일한 비밀번호를 입력해주세요!",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red,
-                    fontSize: 11,
+            if (_input_not_empty)
+              if (!_passwordsMatch)
+                Container(
+                  height: 20,
+                  child: const Text(
+                    "동일한 비밀번호를 입력해주세요!",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                      fontSize: 11,
+                    ),
+                  ),
+                )
+              else
+                Container(
+                  height: 20,
+                  child: const Text(
+                    "동일한 비밀번호입니다!",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                      fontSize: 11,
+                    ),
                   ),
                 ),
-              )
-            else
-              Container(
-                height: 20,
-                child: const Text(
-                  "동일한 비밀번호입니다!",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                    fontSize: 11,
-                  ),
-                ),
-              ),
             /*** 제출 ****/
             Container(
               height: 20, //마진
