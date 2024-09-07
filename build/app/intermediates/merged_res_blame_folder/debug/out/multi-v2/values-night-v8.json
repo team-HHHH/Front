@@ -1,8 +1,25 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.scheduler.app-mergeDebugResources-9:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.example.scheduler.app-mergeDebugResources-24:/values-night-v8/values-night-v8.xml",
             "map": [
+                {
+                    "source": "C:\\Users\\leejoonhyeock\\.gradle\\caches\\transforms-3\\3cf4204e99f9901407d6beabb4312689\\transformed\\appcompat-1.0.2\\res\\values-night-v8\\values-night-v8.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,125,209,293,389,491,593",
+                        "endColumns": "69,83,83,95,101,101,93",
+                        "endOffsets": "120,204,288,384,486,588,682"
+                    },
+                    "to": {
+                        "startLines": "9,10,11,12,13,14,15",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "405,475,559,643,739,841,943",
+                        "endColumns": "69,83,83,95,101,101,93",
+                        "endOffsets": "470,554,638,734,836,938,1032"
+                    }
+                },
                 {
                     "source": "C:\\Users\\leejoonhyeock\\Desktop\\scheduler\\Front\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {

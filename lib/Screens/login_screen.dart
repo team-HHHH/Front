@@ -1,5 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_story.dart';
+import 'package:scheduler/Screens/register_detail_screen.dart';
 import 'package:scheduler/Screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // 로그인 버튼 누를 시 수행.
   void _handleLogin() async {
-    // final url = Uri.parse("");
+    // final url = Uri.parse("users/login/custom");
     // final response = await http.post(
     //   url,
     //   headers: {
@@ -48,9 +55,138 @@ class _LoginScreenState extends State<LoginScreen> {
     // }
   }
 
+  // Oauth 로그인 버튼 클릭 시
+  void _handleOauthLogin(String sns) async {
+    // 이 해시키를 카카오 플랫폼에 등록해야함.
+    // print(await KakaoSdk.origin);
+
+    (String, String)? info;
+    info = (sns == "kakao") ? await _getKakaoInfo() : await _getGoogleInfo();
+    if (info == null) return;
+
+    final (email, userCode) = info;
+
+    // Oauth 로그인 시도(이미 회원인가 확인)
+    final isFirstLogin = await _tryOauthLogin(email, userCode);
+
+    // 처음 로그인이라면? 회원가입해야함.
+    if (isFirstLogin) {
+      await _registerOauthInfo(email, userCode);
+      Navigator.of(context).push(CupertinoPageRoute(
+          builder: (context) => const RegisterDetailScreen()));
+    }
+  }
+
+  Future<(String, String)?> _getKakaoInfo() async {
+    // 카카오톡이 설치되어 있다면?
+    if (await isKakaoTalkInstalled()) {
+      try {
+        await UserApi.instance.loginWithKakaoTalk();
+      } catch (error) {
+        // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+        // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
+        if (error is PlatformException && error.code == 'CANCELED') {
+          return null;
+        }
+        // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
+        try {
+          await UserApi.instance.loginWithKakaoAccount();
+        } catch (error) {}
+      }
+      // 카카오톡 설치안되어 있다면?
+    } else {
+      try {
+        await UserApi.instance.loginWithKakaoAccount();
+      } catch (error) {}
+    }
+
+    try {
+      User user = await UserApi.instance.me();
+
+      final String email = user.kakaoAccount!.email!;
+      final String userCode = user.id.toString();
+
+      return (email, userCode);
+    } catch (error) {}
+
+    return null;
+  }
+
+  Future<bool> _tryOauthLogin(String email, String userCode) async {
+    final url = Uri.parse("/users/login/oauth");
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(
+        <String, String>{
+          "loginId": "*$userCode",
+          "password": email,
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+      // result 객체 추출
+      final Map<String, dynamic> result = responseData['result'];
+      final int resultCode = result['resultCode'];
+      final String resultMessage = result['resultMessage'];
+
+      // body 객체 추출
+      final Map<String, dynamic> body = responseData['body'];
+      final String isFirstLogin = body["isFirstLogin"];
+      if (isFirstLogin == "true") {
+        return true;
+      }
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _registerOauthInfo(String email, String userCode) async {
+    final url = Uri.parse("/users/register");
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(
+        <String, String>{
+          "email": email,
+          "id": userCode,
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+      // result 객체 추출
+      final Map<String, dynamic> result = responseData['result'];
+      final int resultCode = result['resultCode'];
+      final String resultMessage = result['resultMessage'];
+
+      // body 객체 추출
+      final Map<String, dynamic> body = responseData['body'];
+      final String email = body['email'];
+      final String id = body["id"];
+      final String password = body["password"];
+    }
+  }
+
+  Future<(String, String)?> _getGoogleInfo() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) return null;
+    final email = googleUser.email;
+    final userCode = googleUser.id;
+    return (email, userCode);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         bottom: PreferredSize(
@@ -259,6 +395,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   fontSize: 12,
                 ),
               ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    _handleOauthLogin("kakao");
+                  },
+                  icon: Image.asset("assets/images/kakao_login.png"),
+                ),
+                const SizedBox(width: 30),
+                IconButton(
+                  onPressed: () {
+                    _handleOauthLogin("google");
+                  },
+                  icon: Image.asset("assets/images/google_login.png"),
+                )
+              ],
             )
           ],
         ),

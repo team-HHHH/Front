@@ -37,6 +37,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   http: ^1.2.2
+  kakao_flutter_sdk: ^1.4.2
+  google_sign_in: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +59,8 @@ flutter:
   assets:
     - assets/images/Search.png
     - assets/images/DefaultProfile.png
+    - assets/images/google_login.png
+    - assets/images/kakao_login.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
