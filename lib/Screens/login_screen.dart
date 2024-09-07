@@ -248,6 +248,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {},
                 ),
               ],
+            ),
+            const SizedBox(height: 40),
+            const Center(
+              child: Text(
+                "SNS로 로그인 하기",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
             )
           ],
         ),

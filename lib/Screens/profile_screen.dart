@@ -1,8 +1,10 @@
 import 'dart:convert';
-import '../ConfigJH.dart';
-import '../Components/UtilityJH.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import '../Components/UtilityJH.dart';
+import '../ConfigJH.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
