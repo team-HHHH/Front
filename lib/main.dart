@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_story.dart';
 import 'package:scheduler/Screens/login_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  KakaoSdk.init(
+    nativeAppKey: '1e183dbd3fe27b83dd4f6c01898a258f',
+  );
   runApp(const MyApp());
 }
 
