@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+//import 'package:http/http.dart' as http;
+import 'package:scheduler/Screens/register_detail_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -12,6 +15,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   // 이메일 인증 코드를 받음?
   bool _isReceivedCode = false;
+
   // 중복된 아이디임?
   bool? _isDuplicatedId;
 
@@ -54,7 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   // Email 인증하기 버튼 터치 시
   void _handleReciveCode() async {
-    final url = Uri.parse("");
+    //final url = Uri.parse("");
     // final response = await http.post(
     //   url,
     //   headers: {
@@ -117,8 +121,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   // 계속하기 버튼 터치 시
-  void _handleNext() {
-    if (!_validEmail || !_validId || !_validPassword!) return;
+  void _handleNext() async {
+    //if (!_validEmail || !_validId || !_validPassword!) return;
+
+    // final url = Uri.parse("users/register");
+    // final response = await http.post(
+    //   url,
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: jsonEncode(
+    //     <String, String>{
+    //       "email": _enteredEmail,
+    //       "id": _enteredId,
+    //       "password": _enteredPassword,
+    //     },
+    //   ),
+    // );
+    // if (response.statusCode == 200) {
+    //   final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+    //   // result 객체 추출
+    //   final Map<String, dynamic> result = responseData['result'];
+    //   final int resultCode = result['resultCode'];
+    //   final String resultMessage = result['resultMessage'];
+
+    //   // body 객체 추출
+    //   final Map<String, dynamic> body = responseData['body'];
+    //   final String isFirstLogin = body['isFirstLogin'];
+
+    //   final headers = response.headers;
+    //   final accessToken = headers["Authorization"];
+    //   final refreshToken = headers["refresh"];
+    // }
+    Navigator.of(context).push(
+        CupertinoPageRoute(builder: (context) => const RegisterDetailScreen()));
   }
 
   @override
@@ -132,8 +169,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           height: 40,
           child: TextButton(
             onPressed: () {
-              _formKey.currentState!.save();
+              //_formKey.currentState!.save();
               // 아이디, 비밀번호 형식 검사 로직 추가 해야함.
+              _handleNext();
             },
             style: TextButton.styleFrom(
               splashFactory: NoSplash.splashFactory,
@@ -143,6 +181,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               "계속하기",
               style: TextStyle(
                 color: Colors.white,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
