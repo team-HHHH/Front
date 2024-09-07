@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.scheduler.app-mergeDebugResources-14:/values-v24/values-v24.xml",
+            "outputFile": "com.example.scheduler.app-mergeDebugResources-24:/values-v24/values-v24.xml",
             "map": [
                 {
                     "source": "C:\\Users\\leejoonhyeock\\.gradle\\caches\\transforms-3\\3cf4204e99f9901407d6beabb4312689\\transformed\\appcompat-1.0.2\\res\\values-v24\\values-v24.xml",

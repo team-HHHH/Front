@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_story.dart';
 import 'package:scheduler/Screens/register_detail_screen.dart';
@@ -54,22 +55,23 @@ class _LoginScreenState extends State<LoginScreen> {
     // }
   }
 
-  // 카카오 로그인 버튼 클릭 시
-  void _handleKakaoLogin() async {
+  // Oauth 로그인 버튼 클릭 시
+  void _handleOauthLogin(String sns) async {
     // 이 해시키를 카카오 플랫폼에 등록해야함.
-    print(await KakaoSdk.origin);
+    // print(await KakaoSdk.origin);
 
-    // 카카오 정보 가져옴.
-    (String, String)? info = await _getKakaoInfo();
+    (String, String)? info;
+    info = (sns == "kakao") ? await _getKakaoInfo() : await _getGoogleInfo();
     if (info == null) return;
 
     final (email, userCode) = info;
 
-    // 카카오 로그인 시도
-    final isFirstLogin = await _tryKakaoLogin(email, userCode);
+    // Oauth 로그인 시도(이미 회원인가 확인)
+    final isFirstLogin = await _tryOauthLogin(email, userCode);
 
     // 처음 로그인이라면? 회원가입해야함.
     if (isFirstLogin) {
+      await _registerOauthInfo(email, userCode);
       Navigator.of(context).push(CupertinoPageRoute(
           builder: (context) => const RegisterDetailScreen()));
     }
@@ -110,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return null;
   }
 
-  Future<bool> _tryKakaoLogin(String email, String userCode) async {
+  Future<bool> _tryOauthLogin(String email, String userCode) async {
     final url = Uri.parse("/users/login/oauth");
     final response = await http.post(
       url,
@@ -143,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return true;
   }
 
-  Future<void> _registerKakaoInfo(String email, String userCode) async {
+  Future<void> _registerOauthInfo(String email, String userCode) async {
     final url = Uri.parse("/users/register");
     final response = await http.post(
       url,
@@ -173,7 +175,13 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void _handleGoogleLogin() {}
+  Future<(String, String)?> _getGoogleInfo() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) return null;
+    final email = googleUser.email;
+    final userCode = googleUser.id;
+    return (email, userCode);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -394,14 +402,14 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 IconButton(
                   onPressed: () {
-                    _handleKakaoLogin();
+                    _handleOauthLogin("kakao");
                   },
                   icon: Image.asset("assets/images/kakao_login.png"),
                 ),
                 const SizedBox(width: 30),
                 IconButton(
                   onPressed: () {
-                    _handleGoogleLogin();
+                    _handleOauthLogin("google");
                   },
                   icon: Image.asset("assets/images/google_login.png"),
                 )
