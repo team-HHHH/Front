@@ -58,6 +58,8 @@ flutter:
   assets:
     - assets/images/Search.png
     - assets/images/DefaultProfile.png
+    - assets/images/google_login.png
+    - assets/images/kakao_login.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

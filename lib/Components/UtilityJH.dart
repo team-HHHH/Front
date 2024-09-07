@@ -1,13 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import '../ConfigJH.dart';
-import './Webview.dart';
 
 // Custom GestureDetector with Row
 Widget profileNaviBar(String text, String gotos) {
   return GestureDetector(
     onTap: () {
-      debugPrint(gotos + "으로 이동");
+      debugPrint("$gotos으로 이동");
     },
     child: Container(
       width: double.infinity, // 화면 가로 길이 전체
@@ -61,7 +60,7 @@ AppBar topBar(String text, String gotoUrl) {
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Text(
             text,
             style: const TextStyle(
@@ -156,7 +155,7 @@ Widget grayTextButton(String name, String url) {
       },
       style: TextButton.styleFrom(
         padding: EdgeInsets.zero,
-        minimumSize: Size(0, 0),
+        minimumSize: const Size(0, 0),
       ),
       child: Text(
         name,
@@ -171,7 +170,7 @@ Widget grayTextButton(String name, String url) {
 
 Widget grayInputLong(TextEditingController controller, String hintText,
     BuildContext context, bool passwd) {
-  return Container(
+  return SizedBox(
       //width: double.infinity,
       width: MediaQuery.of(context).size.width * 0.9,
       height: 40,
@@ -206,7 +205,7 @@ Widget grayInputLong(TextEditingController controller, String hintText,
 
 Widget grayInputLongWithSearch(
     TextEditingController controller, String hintText, BuildContext context) {
-  return Container(
+  return SizedBox(
       //width: double.infinity,
       width: MediaQuery.of(context).size.width * 0.9,
       height: 40,
@@ -249,7 +248,7 @@ Widget grayInputLongWithSearch(
 
 Widget grayInput(
     TextEditingController controller, String hintText, BuildContext context) {
-  return Container(
+  return SizedBox(
       //width: double.infinity,
       width: MediaQuery.of(context).size.width * 0.6,
       height: 40,
