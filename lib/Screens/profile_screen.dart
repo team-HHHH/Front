@@ -2,6 +2,9 @@ import 'dart:convert';
 import '../ConfigJH.dart';
 import '../Components/UtilityJH.dart';
 import 'package:flutter/material.dart';
+import '../Components/GetBody.dart';
+import '../Components/FileIo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class ProfileScreen extends StatefulWidget {
@@ -13,15 +16,40 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   String _userImg = "assets/images/DefaultProfile.png";
-
+  bool _isLoading = true;
   String _userNickName = "준혁이형 후계자";
   String _userEmail = "baejh724@gmail.com";
   String _userAddr = "서울 강남구 봉은사 5길";
 
+  Future<void> _loadData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final myAccess = prefs.getString(ACCESS);
+
+    final nickname = await getToken(NICKNAME);
+    final email = await getToken(EMAIL);
+    final address = await getToken(ADDRESS);
+
+    print("${nickname}, ${email}, ${address}");
+    setState(() {
+      _userNickName = nickname.toString();
+      _userEmail= email.toString();
+      _userAddr = address.toString();
+      _isLoading = false;
+    });
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topBarDefault("회원정보 수정", "수정", "준혁이형 뭐하노 url"),
+      appBar: topBarDefault("회원정보 수정", "수정", "/mypage", "/mypage/profile/edit", context),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
         child: Column(
@@ -82,7 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 10,
             ), //Margin
             //구분 선 두는겨
-            profileNaviBar("비밀번호 변경", "/change/password"),
+            profileNaviBar("비밀번호 변경", "/change/password", context),
 
             /************* 부가정보  *************/
 

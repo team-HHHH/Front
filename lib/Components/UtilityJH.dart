@@ -4,10 +4,11 @@ import '../ConfigJH.dart';
 import './Webview.dart';
 
 // Custom GestureDetector with Row
-Widget profileNaviBar(String text, String gotos) {
+Widget profileNaviBar(String text, String gotos, BuildContext context) {
   return GestureDetector(
     onTap: () {
       debugPrint(gotos + "으로 이동");
+      Navigator.pushNamed(context, gotos);
     },
     child: Container(
       width: double.infinity, // 화면 가로 길이 전체
@@ -85,7 +86,7 @@ AppBar topBar(String text, String gotoUrl) {
   );
 }
 
-AppBar topBarDefault(String text, String buttonName, String gotoUrl) {
+AppBar topBarDefault(String text, String buttonName, String gotoUrl, String gotoUrlRight, BuildContext context) {
   return AppBar(
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1.0), // 구분선의 두께
@@ -96,7 +97,9 @@ AppBar topBarDefault(String text, String buttonName, String gotoUrl) {
         ),
       ),
       leading: IconButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, gotoUrl);
+        },
         icon: const Icon(
           Icons.arrow_back,
           size: 20,
@@ -111,7 +114,9 @@ AppBar topBarDefault(String text, String buttonName, String gotoUrl) {
           )),
       actions: <Widget>[
         TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, gotoUrlRight);
+            },
             child: Text(
               buttonName,
               style: const TextStyle(

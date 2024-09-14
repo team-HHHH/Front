@@ -1,7 +1,12 @@
 import 'dart:convert';
-
+import 'dart:io';
+import '../Components/GetBody.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import '../ConfigJH.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,8 +22,9 @@ class _LoginScreenState extends State<LoginScreen> {
   String _enteredPassword = "";
 
   // 로그인 버튼 누를 시 수행.
-  void handleLogin() async {
-    final url = Uri.parse("");
+  void handleLogin(BuildContext context) async {
+    final url = Uri.parse("http://121.151.185.49:8080/users/login/custom");
+
     final response = await http.post(
       url,
       headers: {
@@ -31,22 +37,34 @@ class _LoginScreenState extends State<LoginScreen> {
         },
       ),
     );
+    print("Response status: ${response.statusCode}");
+    print("Response body: ${response.body}");
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = jsonDecode(response.body);
-
       // result 객체 추출
       final Map<String, dynamic> result = responseData['result'];
       final int resultCode = result['resultCode'];
       final String resultMessage = result['resultMessage'];
 
+      print("debug :: ${responseData}");
       // body 객체 추출
-      final Map<String, dynamic> body = responseData['body'];
-      final String isFirstLogin = body['isFirstLogin'];
+      final Map<String, dynamic> body = getBody(responseData);
 
       final headers = response.headers;
-      final accessToken = headers["Authorization"];
+      final accessToken = headers["authorization"];
       final refreshToken = headers["refresh"];
+
+      print("access : ${accessToken}");
+      print("refresh : ${refreshToken}");
+      
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(ACCESS, accessToken.toString());
+      await prefs.setString(REFRESH, refreshToken.toString());
+
+      Navigator.pushNamed(context, "/mypage");
+    }
+    else {
     }
   }
 
@@ -177,6 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: TextButton(
                       onPressed: () {
                         _formKey.currentState!.save();
+                        handleLogin(context);
                       },
                       style: TextButton.styleFrom(
                         splashFactory: NoSplash.splashFactory,

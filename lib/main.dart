@@ -20,11 +20,18 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color.fromARGB(255, 96, 193, 195),
         useMaterial3: true,
       ),
+      routes: {
+        '/': (context) => LoginScreen(),
+        "/mypage": (context) => MypageScreen(),
+        "/mypage/profile" : (context) => ProfileScreen(),
+        "/mypage/profile/edit" : (context) => ProfileEditScreen(),
+        "/change/password" : (context) => PasswordEditScreen(),
+      },
       //home: const LoginScreen(),
       //home: const MypageScreen(),
       //home: const ProfileScreen(),
       // home: const ProfileEditScreen(),
-      home: const PasswordEditScreen(),
+      //home: const PasswordEditScreen(),
     );
   }
 }

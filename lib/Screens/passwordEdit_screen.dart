@@ -89,7 +89,7 @@ class _PasswordEditScreenState extends State<PasswordEditScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topBarDefault("비밀번호 변경", "", "준혁이형 뭐하노 url"),
+      appBar: topBarDefault("비밀번호 변경", "", "/mypage/profile", "", context),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
         child: Column(
