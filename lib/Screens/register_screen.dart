@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http;
 import 'package:scheduler/Screens/register_detail_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -33,24 +35,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   // ID 중복체크 버튼 터치 시
   void _handleCheckId() async {
-    // final url = Uri.parse("");
-    // final response = await http.post(
-    //   url,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: jsonEncode(
-    //     <String, String>{
-    //       "loginId": _enteredId,
-    //     },
-    //   ),
-    // );
-    // if (response.statusCode == 200) {
-    //   final Map<String, dynamic> responseData = jsonDecode(response.body);
+    final url = Uri.http("10.21.20.18:8080", "users/check/id");
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(
+        <String, String>{
+          "loginId": _enteredId,
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
 
-    //   // isDuplicated == "true" or "false"
-    //   final String isDuplicated = responseData["isDuplicate"];
-    // }
+      // isDuplicated == "true" or "false"
+      final Map<String, dynamic> responseBody = responseData["body"];
+      final String isDuplicated = responseBody["duplicated"].toString();
+      print(isDuplicated);
+    } else {
+      print(response.statusCode);
+    }
 
     _isDuplicatedId = false;
     setState(() {});
@@ -58,102 +64,103 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   // Email 인증하기 버튼 터치 시
   void _handleReciveCode() async {
-    //final url = Uri.parse("");
-    // final response = await http.post(
-    //   url,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: jsonEncode(
-    //     <String, String>{
-    //       "email": _enteredEmail,
-    //     },
-    //   ),
-    // );
-    // if (response.statusCode == 200) {
-    //   final Map<String, dynamic> responseData = jsonDecode(response.body);
+    final url = Uri.http("10.21.20.18:8080", "users/check/email");
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(
+        <String, String>{
+          "email": _enteredEmail,
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      print(responseData);
+      //final Map<String, dynamic> result = responseData['result'];
 
-    //   final Map<String, dynamic> result = responseData['result'];
+      //final int resultCode = result['resultCode'];
+      //final String resultMessage = result['resultMessage'];
 
-    //   final int resultCode = result['resultCode'];
-    //   final String resultMessage = result['resultMessage'];
+      // body 객체 추출
+      //final Map<String, dynamic> responseBody = responseData['body'];
 
-    //   // body 객체 추출
-    //   final Map<String, dynamic> body = responseData['body'];
-    //   final String isDuplicate = body['isDuplicate'];
-    //
-    //   _isReceivedCode = true;
-    //   setState(() {});
-    // }
-    _isReceivedCode = true;
-    setState(() {});
+      // body 객체 추출
+
+      _isReceivedCode = true;
+      setState(() {});
+    }
   }
 
   // Email 인증 버튼 터치 시
   void _handleCheckCode() async {
-    // final url = Uri.parse("");
-    // final response = await http.post(
-    //   url,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: jsonEncode(
-    //     <String, String>{
-    //       "email": _enteredEmail,
-    //       "emailcode": _enteredCode,
-    //     },
-    //   ),
-    // );
-    // if (response.statusCode == 200) {
-    //   final Map<String, dynamic> responseData = jsonDecode(response.body);
+    final url = Uri.http("10.21.20.18:8080", "users/check/emailcode");
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(
+        <String, String>{
+          "email": _enteredEmail,
+          "emailcode": _enteredCode,
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
 
-    //   final Map<String, dynamic> result = responseData['result'];
+      //final Map<String, dynamic> result = responseData['result'];
 
-    //   final int resultCode = result['resultCode'];
-    //   final String resultMessage = result['resultMessage'];
+      //final int resultCode = result['resultCode'];
+      //final String resultMessage = result['resultMessage'];
 
-    //   // body 객체 추출
-    //   final Map<String, dynamic> body = responseData['body'];
-    //   final String isDuplicate = body['isDuplicate'];
-
-    //   _validCode = true;
-    // }
+      // body 객체 추출
+      final Map<String, dynamic> responseBody = responseData['body'];
+      final String codeCorrect = responseBody['codeCorrect'].toString();
+      print(codeCorrect);
+      //_validCode = true;
+    }
   }
 
   // 계속하기 버튼 터치 시
   void _handleNext() async {
     //if (!_validEmail || !_validId || !_validPassword!) return;
 
-    // final url = Uri.parse("users/register");
-    // final response = await http.post(
-    //   url,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: jsonEncode(
-    //     <String, String>{
-    //       "email": _enteredEmail,
-    //       "id": _enteredId,
-    //       "password": _enteredPassword,
-    //     },
-    //   ),
-    // );
-    // if (response.statusCode == 200) {
-    //   final Map<String, dynamic> responseData = jsonDecode(response.body);
+    final url = Uri.http("10.21.20.18:8080", "/users/register");
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(
+        <String, String>{
+          "email": _enteredEmail,
+          "loginId": _enteredId,
+          "password": _enteredPassword,
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
 
-    //   // result 객체 추출
-    //   final Map<String, dynamic> result = responseData['result'];
-    //   final int resultCode = result['resultCode'];
-    //   final String resultMessage = result['resultMessage'];
+      // result 객체 추출
+      final Map<String, dynamic> result = responseData['result'];
+      final int resultCode = result['resultCode'];
+      final String resultMessage = result['resultMessage'];
 
-    //   // body 객체 추출
-    //   final Map<String, dynamic> body = responseData['body'];
-    //   final String isFirstLogin = body['isFirstLogin'];
+      // body 객체 추출
+      final Map<String, dynamic> body = responseData['body'];
+      final String isFirstLogin = body['isFirstLogin'];
 
-    //   final headers = response.headers;
-    //   final accessToken = headers["Authorization"];
-    //   final refreshToken = headers["refresh"];
-    // }
+      final headers = response.headers;
+      final accessToken = headers["Authorization"];
+      final refreshToken = headers["refresh"];
+
+      print("보냄");
+    }
     Navigator.of(context).push(
         CupertinoPageRoute(builder: (context) => const RegisterDetailScreen()));
   }
@@ -417,8 +424,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: SizedBox(
                             height: 40,
                             child: TextFormField(
-                              onSaved: (newValue) {
-                                _enteredEmail = newValue!;
+                              // onSaved: (newValue) {
+                              //   _enteredEmail = newValue!;
+                              // },
+                              onChanged: (value) {
+                                _enteredEmail = value;
+                                setState(() {});
                               },
                               style: const TextStyle(
                                 color: Colors.black,
@@ -485,8 +496,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 child: SizedBox(
                                   height: 40,
                                   child: TextFormField(
-                                    onSaved: (newValue) {
-                                      _enteredCode = newValue!;
+                                    // onSaved: (newValue) {
+                                    //   _enteredCode = newValue!;
+                                    // },
+                                    onChanged: (value) {
+                                      _enteredCode = value;
+                                      setState(() {});
                                     },
                                     style: const TextStyle(
                                       color: Colors.black,

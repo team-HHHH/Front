@@ -1,5 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-//import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http;
 
 class RegisterDetailScreen extends StatefulWidget {
   const RegisterDetailScreen({super.key});
@@ -13,69 +15,69 @@ class _RegisterDetailScreenState extends State<RegisterDetailScreen> {
   bool? _validNickName;
 
   void _handleNickNameCheck() async {
-    // final url = Uri.parse("users/check/nickname");
-    // final response = await http.post(
-    //   url,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: jsonEncode(
-    //     <String, String>{
-    //       "nickname": _enteredNickName,
-    //     },
-    //   ),
-    // );
-    // if (response.statusCode == 200) {
-    //   final Map<String, dynamic> responseData = jsonDecode(response.body);
+    final url = Uri.http("10.21.20.18:8080", "users/check/nickname");
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(
+        <String, String>{
+          "nickname": _enteredNickName,
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
 
-    //   // result 객체 추출
-    //   final Map<String, dynamic> result = responseData['result'];
-    //   final int resultCode = result['resultCode'];
-    //   final String resultMessage = result['resultMessage'];
+      // result 객체 추출
+      final Map<String, dynamic> result = responseData['result'];
+      final int resultCode = result['resultCode'];
+      final String resultMessage = result['resultMessage'];
 
-    //   // body 객체 추출
-    //   final Map<String, dynamic> body = responseData['body'];
+      // body 객체 추출
+      final Map<String, dynamic> body = responseData['body'];
 
-    //   final headers = response.headers;
-    //   final accessToken = headers["Authorization"];
-    //   final refreshToken = headers["refresh"];
-    // }
+      final headers = response.headers;
+      final accessToken = headers["Authorization"];
+      final refreshToken = headers["refresh"];
+    }
 
     _validNickName = true;
   }
 
   // 회원가입 완료하기 버튼 터치 시
   void _handleRegister() async {
-    //if (_validNickName == null || !_validNickName!) return;
-    // final url = Uri.parse("user/register-detailed");
-    // final response = await http.post(
-    //   url,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: jsonEncode(
-    //     <String, String>{
-    //       "nickname": _enteredNickName,
-    //       "address": "",
-    //       "profileImg": "",
-    //     },
-    //   ),
-    // );
-    // if (response.statusCode == 200) {
-    //   final Map<String, dynamic> responseData = jsonDecode(response.body);
+    // if (_validNickName == null || !_validNickName!) return;
+    final url = Uri.http("10.21.20.18:8080", "users/register-detailed");
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(
+        <String, String>{
+          "nickname": _enteredNickName,
+          "address": "",
+          "profileImg": "",
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
 
-    //   // result 객체 추출
-    //   final Map<String, dynamic> result = responseData['result'];
-    //   final int resultCode = result['resultCode'];
-    //   final String resultMessage = result['resultMessage'];
+      // result 객체 추출
+      final Map<String, dynamic> result = responseData['result'];
+      final int resultCode = result['resultCode'];
+      final String resultMessage = result['resultMessage'];
 
-    //   // body 객체 추출
-    //   final Map<String, dynamic> body = responseData['body'];
+      // body 객체 추출
+      final Map<String, dynamic> body = responseData['body'];
 
-    //   final headers = response.headers;
-    //   final accessToken = headers["Authorization"];
-    //   final refreshToken = headers["refresh"];
-    // }
+      final headers = response.headers;
+      final accessToken = headers["Authorization"];
+      final refreshToken = headers["refresh"];
+    }
 
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
