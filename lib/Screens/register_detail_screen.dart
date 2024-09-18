@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterDetailScreen extends StatefulWidget {
   const RegisterDetailScreen({super.key});
@@ -15,7 +16,7 @@ class _RegisterDetailScreenState extends State<RegisterDetailScreen> {
   bool? _validNickName;
 
   void _handleNickNameCheck() async {
-    final url = Uri.http("10.21.20.18:8080", "users/check/nickname");
+    final url = Uri.http("localhost:8080", "users/check/nickname");
     final response = await http.post(
       url,
       headers: {
@@ -49,7 +50,7 @@ class _RegisterDetailScreenState extends State<RegisterDetailScreen> {
   // 회원가입 완료하기 버튼 터치 시
   void _handleRegister() async {
     // if (_validNickName == null || !_validNickName!) return;
-    final url = Uri.http("10.21.20.18:8080", "users/register-detailed");
+    final url = Uri.http("localhost:8080", "users/register-detailed");
     final response = await http.post(
       url,
       headers: {
@@ -77,9 +78,17 @@ class _RegisterDetailScreenState extends State<RegisterDetailScreen> {
       final headers = response.headers;
       final accessToken = headers["Authorization"];
       final refreshToken = headers["refresh"];
+
+      _saveNickname(_enteredNickName);
     }
 
     Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  void _saveNickname(String nickname) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString("nickname", nickname);
   }
 
   @override
