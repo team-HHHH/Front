@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_story.dart';
+import 'package:scheduler/Components/apiHelper.dart';
 import 'package:scheduler/Screens/register_detail_screen.dart';
 import 'package:scheduler/Screens/register_screen.dart';
 
@@ -24,35 +25,29 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // 로그인 버튼 누를 시 수행.
   void _handleLogin() async {
-    // final url = Uri.parse("users/login/custom");
-    // final response = await http.post(
-    //   url,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: jsonEncode(
-    //     <String, String>{
-    //       "loginId": _enteredId,
-    //       "password": _enteredPassword,
-    //     },
-    //   ),
-    // );
-    // if (response.statusCode == 200) {
-    //   final Map<String, dynamic> responseData = jsonDecode(response.body);
+    final url = Uri.parse("users/login/custom");
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(
+        <String, String>{
+          "loginId": _enteredId,
+          "password": _enteredPassword,
+        },
+      ),
+    );
+    if (response.statusCode != 200) return;
 
-    //   // result 객체 추출
-    //   final Map<String, dynamic> result = responseData['result'];
-    //   final int resultCode = result['resultCode'];
-    //   final String resultMessage = result['resultMessage'];
+    final responseData = ApiHelper(response.body);
+    final resultCode = responseData.getResultCode();
+    final resultMessage = responseData.getResultMessage();
 
-    //   // body 객체 추출
-    //   final Map<String, dynamic> body = responseData['body'];
-    //   final String isFirstLogin = body['isFirstLogin'];
+    if (resultCode != 200) return;
 
-    //   final headers = response.headers;
-    //   final accessToken = headers["Authorization"];
-    //   final refreshToken = headers["refresh"];
-    // }
+    final isFirstLogin =
+        responseData.getBodyValue("isFirstLogin").toString() == "true";
   }
 
   // Oauth 로그인 버튼 클릭 시
@@ -126,23 +121,18 @@ class _LoginScreenState extends State<LoginScreen> {
         },
       ),
     );
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
+    if (response.statusCode != 200) return false;
 
-      // result 객체 추출
-      final Map<String, dynamic> result = responseData['result'];
-      final int resultCode = result['resultCode'];
-      final String resultMessage = result['resultMessage'];
+    final responseData = ApiHelper(response.body);
+    final resultCode = responseData.getResultCode();
+    final resultMessage = responseData.getResultMessage();
 
-      // body 객체 추출
-      final Map<String, dynamic> body = responseData['body'];
-      final String isFirstLogin = body["isFirstLogin"];
-      if (isFirstLogin == "true") {
-        return true;
-      }
-      return false;
-    }
-    return true;
+    if (resultCode != 200) return false;
+
+    final isFirstLogin =
+        responseData.getBodyValue("isFirstLogin").toString() == "true";
+
+    return isFirstLogin;
   }
 
   Future<void> _registerOauthInfo(String email, String userCode) async {
@@ -159,20 +149,17 @@ class _LoginScreenState extends State<LoginScreen> {
         },
       ),
     );
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
+    if (response.statusCode != 200) return;
 
-      // result 객체 추출
-      final Map<String, dynamic> result = responseData['result'];
-      final int resultCode = result['resultCode'];
-      final String resultMessage = result['resultMessage'];
+    final responseData = ApiHelper(response.body);
+    final resultCode = responseData.getResultCode();
+    final resultMessage = responseData.getResultMessage();
 
-      // body 객체 추출
-      final Map<String, dynamic> body = responseData['body'];
-      final String email = body['email'];
-      final String id = body["id"];
-      final String password = body["password"];
-    }
+    if (resultCode != 200) return;
+
+    final receivedEmail = responseData.getBodyValue("email").toString();
+    final loginId = responseData.getBodyValue("loginId").toString();
+    final password = responseData.getBodyValue("password").toString();
   }
 
   Future<(String, String)?> _getGoogleInfo() async {

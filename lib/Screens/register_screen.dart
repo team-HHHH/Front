@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:scheduler/Components/apiHelper.dart';
 import 'package:scheduler/Screens/register_detail_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -20,7 +21,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   // 중복된 아이디임?
   bool? _isDuplicatedId;
-
+  bool? _validCode;
   String _enteredId = "";
 
   String _enteredPassword = "";
@@ -35,94 +36,88 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   // ID 중복체크 버튼 터치 시
   void _handleCheckId() async {
-    // final url = Uri.http("localhost:8080", "users/check/id");
-    // final response = await http.post(
-    //   url,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: jsonEncode(
-    //     <String, String>{
-    //       "loginId": _enteredId,
-    //     },
-    //   ),
-    // );
-    // if (response.statusCode == 200) {
-    //   final Map<String, dynamic> responseData = jsonDecode(response.body);
+    final url = Uri.http("localhost:8080", "users/check/id");
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(
+        <String, String>{
+          "loginId": _enteredId,
+        },
+      ),
+    );
+    if (response.statusCode == 200) return;
+    final responseData = ApiHelper(response.body);
+    final resultCode = responseData.getResultCode();
+    if (resultCode != 200) return;
 
-    //   // isDuplicated == "true" or "false"
-    //   final Map<String, dynamic> responseBody = responseData["body"];
-    //   final String isDuplicated = responseBody["duplicated"].toString();
-    //   print(isDuplicated);
-    // } else {
-    //   print(response.statusCode);
-    // }
+    final resultMessage = responseData.getResultMessage();
+    final isDuplicated =
+        responseData.getBodyValue("duplicated").toString() == "true";
 
-    // _isDuplicatedId = false;
-    // setState(() {});
+    _isDuplicatedId = isDuplicated;
+    setState(() {});
   }
 
   // Email 인증하기 버튼 터치 시
   void _handleReciveCode() async {
-    // final url = Uri.http("localhost:8080", "users/check/email");
-    // final response = await http.post(
-    //   url,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: jsonEncode(
-    //     <String, String>{
-    //       "email": _enteredEmail,
-    //     },
-    //   ),
-    // );
-    // if (response.statusCode == 200) {
-    //   final Map<String, dynamic> responseData = jsonDecode(response.body);
-    //   print(responseData);
-    //   //final Map<String, dynamic> result = responseData['result'];
+    final url = Uri.http("localhost:8080", "users/check/email");
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(
+        <String, String>{
+          "email": _enteredEmail,
+        },
+      ),
+    );
+    if (response.statusCode == 200) return;
 
-    //   //final int resultCode = result['resultCode'];
-    //   //final String resultMessage = result['resultMessage'];
+    final responseData = ApiHelper(response.body);
+    final resultCode = responseData.getResultCode();
 
-    //   // body 객체 추출
-    //   //final Map<String, dynamic> responseBody = responseData['body'];
+    if (resultCode != 200) return;
 
-    //   // body 객체 추출
+    final resultMessage = responseData.getResultMessage();
+    final isDuplicated =
+        responseData.getBodyValue("duplicated").toString() == "true";
 
-    //   _isReceivedCode = true;
-    //   setState(() {});
-    // }
+    if (isDuplicated) return; // 이미 존재하는 이메일
+    setState(() {});
   }
 
   // Email 인증 버튼 터치 시
   void _handleCheckCode() async {
-    // final url = Uri.http("localhost:8080", "users/check/emailcode");
-    // final response = await http.post(
-    //   url,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: jsonEncode(
-    //     <String, String>{
-    //       "email": _enteredEmail,
-    //       "emailcode": _enteredCode,
-    //     },
-    //   ),
-    // );
-    // if (response.statusCode == 200) {
-    //   final Map<String, dynamic> responseData = jsonDecode(response.body);
+    final url = Uri.http("localhost:8080", "users/check/emailcode");
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(
+        <String, String>{
+          "email": _enteredEmail,
+          "emailcode": _enteredCode,
+        },
+      ),
+    );
+    if (response.statusCode != 200) return;
+    final responseData = ApiHelper(response.body);
+    final resultCode = responseData.getResultCode();
 
-    //   //final Map<String, dynamic> result = responseData['result'];
+    if (resultCode != 200) return;
 
-    //   //final int resultCode = result['resultCode'];
-    //   //final String resultMessage = result['resultMessage'];
+    final resultMessage = responseData.getResultMessage();
+    final isCorrectCode =
+        responseData.getBodyValue("codeCorrect").toString() == "true";
 
-    //   // body 객체 추출
-    //   final Map<String, dynamic> responseBody = responseData['body'];
-    //   final String codeCorrect = responseBody['codeCorrect'].toString();
-    //   print(codeCorrect);
-    //   //_validCode = true;
-    // }
+    _validCode = isCorrectCode;
+
+    setState() {}
   }
 
   // 계속하기 버튼 터치 시
@@ -143,24 +138,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         },
       ),
     );
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
+    if (response.statusCode != 200) return;
+    final responseData = ApiHelper(response.body);
+    final resultCode = responseData.getResultCode();
 
-      // result 객체 추출
-      final Map<String, dynamic> result = responseData['result'];
-      final int resultCode = result['resultCode'];
-      final String resultMessage = result['resultMessage'];
+    if (resultCode != 200) return;
 
-      // body 객체 추출
-      final Map<String, dynamic> body = responseData['body'];
-      final String isFirstLogin = body['isFirstLogin'];
-
-      final headers = response.headers;
-      final accessToken = headers["Authorization"];
-      final refreshToken = headers["refresh"];
-
-      print("보냄");
-    }
+    final resultMessage = responseData.getResultMessage();
     Navigator.of(context).push(
         CupertinoPageRoute(builder: (context) => const RegisterDetailScreen()));
   }

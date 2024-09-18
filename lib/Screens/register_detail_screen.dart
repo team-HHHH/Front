@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:scheduler/Components/apiHelper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterDetailScreen extends StatefulWidget {
@@ -28,23 +29,17 @@ class _RegisterDetailScreenState extends State<RegisterDetailScreen> {
         },
       ),
     );
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
+    if (response.statusCode != 200) return;
 
-      // result 객체 추출
-      final Map<String, dynamic> result = responseData['result'];
-      final int resultCode = result['resultCode'];
-      final String resultMessage = result['resultMessage'];
+    final responseData = ApiHelper(response.body);
+    final resultCode = responseData.getResultCode();
+    final resultMessage = responseData.getResultMessage();
 
-      // body 객체 추출
-      final Map<String, dynamic> body = responseData['body'];
+    if (resultCode != 200) return;
+    final isDuplicated =
+        responseData.getBodyValue("duplicated").toString() == "true";
 
-      final headers = response.headers;
-      final accessToken = headers["Authorization"];
-      final refreshToken = headers["refresh"];
-    }
-
-    _validNickName = true;
+    _validNickName = isDuplicated;
   }
 
   // 회원가입 완료하기 버튼 터치 시
@@ -64,23 +59,16 @@ class _RegisterDetailScreenState extends State<RegisterDetailScreen> {
         },
       ),
     );
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
+    if (response.statusCode == 200) return;
 
-      // result 객체 추출
-      final Map<String, dynamic> result = responseData['result'];
-      final int resultCode = result['resultCode'];
-      final String resultMessage = result['resultMessage'];
+    final responseData = ApiHelper(response.body);
+    final resultCode = responseData.getResultCode();
+    final resultMessage = responseData.getResultMessage();
 
-      // body 객체 추출
-      final Map<String, dynamic> body = responseData['body'];
+    if (resultCode != 200) return;
 
-      final headers = response.headers;
-      final accessToken = headers["Authorization"];
-      final refreshToken = headers["refresh"];
-
-      _saveNickname(_enteredNickName);
-    }
+    // 로컬 DB에 닉네임 저장
+    _saveNickname(_enteredNickName);
 
     Navigator.of(context).popUntil((route) => route.isFirst);
   }

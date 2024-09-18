@@ -13,6 +13,11 @@ class ApiHelper {
     return result;
   }
 
+  Map<String, dynamic> _getBody() {
+    final Map<String, dynamic> body = responseData['body'];
+    return body;
+  }
+
   String getResultMessage() {
     final String resultMessage = _getResult()["resultMessage"];
     return resultMessage;
@@ -23,7 +28,7 @@ class ApiHelper {
     return resultCode;
   }
 
-  dynamic getValue(String key) {
-    return _getResult()[key];
+  dynamic getBodyValue(String key) {
+    final Map<String, dynamic> body = _getBody()[key];
   }
 }
