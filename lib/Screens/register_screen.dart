@@ -32,7 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final bool _validId = false;
   bool? _validPassword;
-  final bool _validEmail = false;
+  bool _validEmail = false;
 
   // ID 중복체크 버튼 터치 시
   void _handleCheckId() async {
@@ -59,6 +59,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     _isDuplicatedId = isDuplicated;
     setState(() {});
+  }
+
+  bool _handleEmailFormatCheck(String email) {
+    // 정규식 패턴 정의 (일반적인 이메일 형식에 맞춤)
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    return emailRegex.hasMatch(email);
   }
 
   // Email 인증하기 버튼 터치 시
@@ -408,11 +415,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: SizedBox(
                             height: 40,
                             child: TextFormField(
-                              // onSaved: (newValue) {
-                              //   _enteredEmail = newValue!;
-                              // },
                               onChanged: (value) {
                                 _enteredEmail = value;
+                                _validEmail = _handleEmailFormatCheck(value);
                                 setState(() {});
                               },
                               style: const TextStyle(
@@ -471,7 +476,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 20,
+                      child: Text(
+                        _validEmail == null
+                            ? ""
+                            : (_validEmail ? "" : "    올바른 이메일 형식을 입력하세요."),
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ),
                     _isReceivedCode
                         ? Row(
                             children: [
