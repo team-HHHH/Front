@@ -122,6 +122,12 @@
       "languageVersion": "2.15"
     },
     {
+      "name": "get_storage",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/get_storage-2.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
       "name": "google_identity_services_web",
       "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/google_identity_services_web-0.3.1+4",
       "packageUri": "lib/",
@@ -288,6 +294,24 @@
       "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/path-1.9.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "path_provider",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/path_provider-2.1.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "path_provider_android",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/path_provider_android-2.2.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "path_provider_foundation",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/path_provider_foundation-2.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
     },
     {
       "name": "path_provider_linux",
@@ -470,7 +494,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-09-28T13:26:39.389890Z",
+  "generated": "2024-09-28T13:32:20.985061Z",
   "generator": "pub",
   "generatorVersion": "3.3.4"
 }
