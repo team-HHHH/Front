@@ -116,6 +116,12 @@
       "languageVersion": "3.2"
     },
     {
+      "name": "get",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/get-4.6.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
       "name": "google_identity_services_web",
       "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/google_identity_services_web-0.3.1+4",
       "packageUri": "lib/",
@@ -464,7 +470,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-09-28T13:08:10.744529Z",
+  "generated": "2024-09-28T13:26:39.389890Z",
   "generator": "pub",
   "generatorVersion": "3.3.4"
 }

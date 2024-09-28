@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color.fromARGB(255, 96, 193, 195),
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      home: LoginScreen(),
       //home: const MypageScreen(),
       //home: const ProfileScreen(),
       //home: const ProfileEditScreen(),
