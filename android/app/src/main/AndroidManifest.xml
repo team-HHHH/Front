@@ -1,11 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package = "com.example.scheduler">
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    
     <application
         android:label="scheduler"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-
-
+    
         <!-- 카카오 로그인 커스텀 URL 스킴 설정 -->
         <activity 
             android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity"

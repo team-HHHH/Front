@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_story.dart';
 import 'package:scheduler/Screens/login_screen.dart';
+import 'package:scheduler/Screens/main_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,12 +17,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       theme: ThemeData(
         primaryColor: const Color.fromARGB(255, 96, 193, 195),
         useMaterial3: true,
       ),
-      home: LoginScreen(),
+      home: const MainScreen(),
+      //LoginScreen(),
       //home: const MypageScreen(),
       //home: const ProfileScreen(),
       //home: const ProfileEditScreen(),

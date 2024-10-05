@@ -7,6 +7,7 @@ import 'package:scheduler/Components/ApiHelper.dart';
 import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_story.dart';
 import 'package:scheduler/Screens/register_detail_screen.dart';
+import 'package:scheduler/Screens/register_screen.dart';
 
 // 로그인과 관련된 비즈니스 로직 수행
 //
@@ -27,7 +28,7 @@ class LoginController extends GetxController {
 
   // 로그인 버튼 누를 시 수행.
   void handleLogin() async {
-    final url = Uri.parse("users/login/custom");
+    final url = Uri.http("54.180.244.145:8080", "users/login/custom");
     final response = await http.post(
       url,
       headers: {
@@ -45,11 +46,15 @@ class LoginController extends GetxController {
     final responseData = ApiHelper(response.body);
     final resultCode = responseData.getResultCode();
     final resultMessage = responseData.getResultMessage();
-
+    print(resultMessage);
     if (resultCode != 200) return;
 
     final isFirstLogin =
         responseData.getBodyValue("isFirstLogin").toString() == "true";
+  }
+
+  void handleRegister() {
+    Get.to(RegisterScreen());
   }
 
   // Oauth 로그인 버튼 클릭 시

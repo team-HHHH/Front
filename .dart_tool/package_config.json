@@ -20,10 +20,46 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "bloc",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/bloc-8.1.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "boolean_selector",
       "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/boolean_selector-2.1.1",
       "packageUri": "lib/",
       "languageVersion": "2.17"
+    },
+    {
+      "name": "camera",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/camera-0.10.6",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "camera_android",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/camera_android-0.10.9+2",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
+      "name": "camera_avfoundation",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/camera_avfoundation-0.9.17+3",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "camera_platform_interface",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/camera_platform_interface-2.8.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "camera_web",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/camera_web-0.3.5",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
     },
     {
       "name": "characters",
@@ -50,6 +86,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "cross_file",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/cross_file-0.3.4+2",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
       "name": "crypto",
       "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/crypto-3.0.3",
       "packageUri": "lib/",
@@ -72,6 +114,12 @@
       "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/encrypt-5.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.18"
+    },
+    {
+      "name": "equatable",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/equatable-2.0.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "fake_async",
@@ -98,10 +146,46 @@
       "languageVersion": "3.2"
     },
     {
+      "name": "flutter_bloc",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/flutter_bloc-8.1.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_document_scanner",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/flutter_document_scanner-1.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "flutter_document_scanner_android",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/flutter_document_scanner_android-1.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "flutter_document_scanner_ios",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/flutter_document_scanner_ios-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "flutter_document_scanner_platform_interface",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/flutter_document_scanner_platform_interface-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "flutter_lints",
       "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/flutter_lints-3.0.2",
       "packageUri": "lib/",
       "languageVersion": "3.1"
+    },
+    {
+      "name": "flutter_plugin_android_lifecycle",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.19",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
     },
     {
       "name": "flutter_test",
@@ -290,6 +374,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "nested",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/nested-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "path",
       "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/path-1.9.0",
       "packageUri": "lib/",
@@ -348,6 +438,12 @@
       "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/pointycastle-3.9.1",
       "packageUri": "lib/",
       "languageVersion": "3.2"
+    },
+    {
+      "name": "provider",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/provider-6.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "shared_preferences",
@@ -414,6 +510,12 @@
       "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/stream_channel-2.1.2",
       "packageUri": "lib/",
       "languageVersion": "2.19"
+    },
+    {
+      "name": "stream_transform",
+      "rootUri": "file:///Users/lee/.pub-cache/hosted/pub.dev/stream_transform-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
     },
     {
       "name": "string_scanner",
@@ -494,7 +596,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-09-28T13:32:20.985061Z",
+  "generated": "2024-10-05T17:42:59.189786Z",
   "generator": "pub",
   "generatorVersion": "3.3.4"
 }

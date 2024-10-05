@@ -41,6 +41,7 @@ dependencies:
   google_sign_in: ^6.2.1
   get: ^4.6.6
   get_storage: ^2.1.1
+  flutter_document_scanner: ^1.1.2
 
 dev_dependencies:
   flutter_test:

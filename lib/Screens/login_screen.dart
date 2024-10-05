@@ -1,187 +1,17 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk_story.dart';
-import 'package:scheduler/Screens/register_detail_screen.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:scheduler/Controllers/login_controller.dart';
+import 'package:scheduler/Controllers/token_controller.dart';
 import 'package:scheduler/Screens/register_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormState>(); // Form 위젯을 위해 사용.
-
-  String _enteredId = "";
-  String _enteredPassword = "";
-
-  // 로그인 버튼 누를 시 수행.
-  void _handleLogin() async {
-    // final url = Uri.parse("users/login/custom");
-    // final response = await http.post(
-    //   url,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: jsonEncode(
-    //     <String, String>{
-    //       "loginId": _enteredId,
-    //       "password": _enteredPassword,
-    //     },
-    //   ),
-    // );
-    // if (response.statusCode == 200) {
-    //   final Map<String, dynamic> responseData = jsonDecode(response.body);
-
-    //   // result 객체 추출
-    //   final Map<String, dynamic> result = responseData['result'];
-    //   final int resultCode = result['resultCode'];
-    //   final String resultMessage = result['resultMessage'];
-
-    //   // body 객체 추출
-    //   final Map<String, dynamic> body = responseData['body'];
-    //   final String isFirstLogin = body['isFirstLogin'];
-
-    //   final headers = response.headers;
-    //   final accessToken = headers["Authorization"];
-    //   final refreshToken = headers["refresh"];
-    // }
-  }
-
-  // Oauth 로그인 버튼 클릭 시
-  void _handleOauthLogin(String sns) async {
-    // 이 해시키를 카카오 플랫폼에 등록해야함.
-    // print(await KakaoSdk.origin);
-
-    (String, String)? info;
-    info = (sns == "kakao") ? await _getKakaoInfo() : await _getGoogleInfo();
-    if (info == null) return;
-
-    final (email, userCode) = info;
-
-    // Oauth 로그인 시도(이미 회원인가 확인)
-    final isFirstLogin = await _tryOauthLogin(email, userCode);
-
-    // 처음 로그인이라면? 회원가입해야함.
-    if (isFirstLogin) {
-      await _registerOauthInfo(email, userCode);
-      Navigator.of(context).push(CupertinoPageRoute(
-          builder: (context) => const RegisterDetailScreen()));
-    }
-  }
-
-  Future<(String, String)?> _getKakaoInfo() async {
-    // 카카오톡이 설치되어 있다면?
-    if (await isKakaoTalkInstalled()) {
-      try {
-        await UserApi.instance.loginWithKakaoTalk();
-      } catch (error) {
-        // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
-        // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
-        if (error is PlatformException && error.code == 'CANCELED') {
-          return null;
-        }
-        // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
-        try {
-          await UserApi.instance.loginWithKakaoAccount();
-        } catch (error) {}
-      }
-      // 카카오톡 설치안되어 있다면?
-    } else {
-      try {
-        await UserApi.instance.loginWithKakaoAccount();
-      } catch (error) {}
-    }
-
-    try {
-      User user = await UserApi.instance.me();
-
-      final String email = user.kakaoAccount!.email!;
-      final String userCode = user.id.toString();
-
-      return (email, userCode);
-    } catch (error) {}
-
-    return null;
-  }
-
-  Future<bool> _tryOauthLogin(String email, String userCode) async {
-    final url = Uri.parse("/users/login/oauth");
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(
-        <String, String>{
-          "loginId": "*$userCode",
-          "password": email,
-        },
-      ),
-    );
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-
-      // result 객체 추출
-      final Map<String, dynamic> result = responseData['result'];
-      final int resultCode = result['resultCode'];
-      final String resultMessage = result['resultMessage'];
-
-      // body 객체 추출
-      final Map<String, dynamic> body = responseData['body'];
-      final String isFirstLogin = body["isFirstLogin"];
-      if (isFirstLogin == "true") {
-        return true;
-      }
-      return false;
-    }
-    return true;
-  }
-
-  Future<void> _registerOauthInfo(String email, String userCode) async {
-    final url = Uri.parse("/users/register");
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(
-        <String, String>{
-          "email": email,
-          "id": userCode,
-        },
-      ),
-    );
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-
-      // result 객체 추출
-      final Map<String, dynamic> result = responseData['result'];
-      final int resultCode = result['resultCode'];
-      final String resultMessage = result['resultMessage'];
-
-      // body 객체 추출
-      final Map<String, dynamic> body = responseData['body'];
-      final String email = body['email'];
-      final String id = body["id"];
-      final String password = body["password"];
-    }
-  }
-
-  Future<(String, String)?> _getGoogleInfo() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    if (googleUser == null) return null;
-    final email = googleUser.email;
-    final userCode = googleUser.id;
-    return (email, userCode);
-  }
+  final LoginController loginController = Get.put(LoginController());
+  final TokenController tokenController = Get.put(TokenController());
 
   @override
   Widget build(BuildContext context) {
@@ -234,102 +64,97 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 40,
-                    child: TextFormField(
-                      onSaved: (newValue) {
-                        _enteredId = newValue!;
-                      },
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
+            Column(
+              children: [
+                SizedBox(
+                  height: 40,
+                  child: TextField(
+                    onChanged: (newValue) {
+                      loginController.updateId(newValue);
+                    },
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: "아이디",
+                      contentPadding: const EdgeInsets.fromLTRB(15, 0, 0, 5),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: const BorderSide(
+                            color: Colors.grey), // 비활성화 상태의 테두리 색상
                       ),
-                      decoration: InputDecoration(
-                        hintText: "아이디",
-                        contentPadding: const EdgeInsets.fromLTRB(15, 0, 0, 5),
-                        border: OutlineInputBorder(
+                      enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25),
                           borderSide: const BorderSide(
-                              color: Colors.grey), // 비활성화 상태의 테두리 색상
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: const BorderSide(
-                                color: Colors.grey) // 활성화 상태의 테두리 색상
-                            ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25),
-                          borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor,
-                            width: 2.0,
-                          ), // 포커스 상태에서 테두리 색상
-                        ),
+                              color: Colors.grey) // 활성화 상태의 테두리 색상
+                          ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                          width: 2.0,
+                        ), // 포커스 상태에서 테두리 색상
                       ),
                     ),
                   ),
-                  const SizedBox(height: 25),
-                  SizedBox(
-                    height: 40,
-                    child: TextFormField(
-                      onSaved: (newValue) {
-                        _enteredPassword = newValue!;
-                      },
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
+                ),
+                const SizedBox(height: 25),
+                SizedBox(
+                  height: 40,
+                  child: TextField(
+                    obscureText: true,
+                    onChanged: (newValue) {
+                      loginController.updatePassword(newValue);
+                    },
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: "비밀번호",
+                      contentPadding: const EdgeInsets.fromLTRB(15, 0, 0, 5),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: const BorderSide(
+                            color: Colors.grey), // 비활성화 상태의 테두리 색상
                       ),
-                      decoration: InputDecoration(
-                        hintText: "비밀번호",
-                        contentPadding: const EdgeInsets.fromLTRB(15, 0, 0, 5),
-                        border: OutlineInputBorder(
+                      enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25),
                           borderSide: const BorderSide(
-                              color: Colors.grey), // 비활성화 상태의 테두리 색상
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: const BorderSide(
-                                color: Colors.grey) // 활성화 상태의 테두리 색상
-                            ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25),
-                          borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor,
-                            width: 2.0,
-                          ), // 포커스 상태에서 테두리 색상
-                        ),
+                              color: Colors.grey) // 활성화 상태의 테두리 색상
+                          ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                          width: 2.0,
+                        ), // 포커스 상태에서 테두리 색상
                       ),
                     ),
                   ),
-                  const SizedBox(height: 25),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 40,
-                    child: TextButton(
-                      onPressed: () {
-                        _formKey.currentState!.save();
-                        // 아이디, 비밀번호 형식 검사 로직 추가 해야함.
-
-                        _handleLogin();
-                      },
-                      style: TextButton.styleFrom(
-                        splashFactory: NoSplash.splashFactory,
-                        backgroundColor: Theme.of(context).primaryColor,
-                      ),
-                      child: const Text(
-                        "로그인",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                ),
+                const SizedBox(height: 25),
+                SizedBox(
+                  width: double.infinity,
+                  height: 40,
+                  child: TextButton(
+                    onPressed: () {
+                      loginController.handleLogin();
+                    },
+                    style: TextButton.styleFrom(
+                      splashFactory: NoSplash.splashFactory,
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
+                    child: const Text(
+                      "로그인",
+                      style: TextStyle(
+                        color: Colors.white,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             const SizedBox(height: 5),
             Row(
@@ -341,11 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     splashFactory: NoSplash.splashFactory,
                   ),
                   onPressed: () {
-                    Navigator.of(context).push(
-                      CupertinoPageRoute(
-                        builder: (context) => const RegisterScreen(),
-                      ),
-                    );
+                    loginController.handleRegister();
                   },
                   child: const Text(
                     "회원가입",
@@ -402,14 +223,14 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 IconButton(
                   onPressed: () {
-                    _handleOauthLogin("kakao");
+                    loginController.handleOauthLogin("kakao");
                   },
                   icon: Image.asset("assets/images/kakao_login.png"),
                 ),
                 const SizedBox(width: 30),
                 IconButton(
                   onPressed: () {
-                    _handleOauthLogin("google");
+                    loginController.handleOauthLogin("google");
                   },
                   icon: Image.asset("assets/images/google_login.png"),
                 )

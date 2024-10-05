@@ -1,4 +1,12 @@
 # This is a generated file; do not edit or check into version control.
+camera=/Users/lee/.pub-cache/hosted/pub.dev/camera-0.10.6/
+camera_android=/Users/lee/.pub-cache/hosted/pub.dev/camera_android-0.10.9+2/
+camera_avfoundation=/Users/lee/.pub-cache/hosted/pub.dev/camera_avfoundation-0.9.17+3/
+camera_web=/Users/lee/.pub-cache/hosted/pub.dev/camera_web-0.3.5/
+flutter_document_scanner=/Users/lee/.pub-cache/hosted/pub.dev/flutter_document_scanner-1.1.2/
+flutter_document_scanner_android=/Users/lee/.pub-cache/hosted/pub.dev/flutter_document_scanner_android-1.1.1/
+flutter_document_scanner_ios=/Users/lee/.pub-cache/hosted/pub.dev/flutter_document_scanner_ios-1.0.0/
+flutter_plugin_android_lifecycle=/Users/lee/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.19/
 google_sign_in=/Users/lee/.pub-cache/hosted/pub.dev/google_sign_in-6.2.1/
 google_sign_in_android=/Users/lee/.pub-cache/hosted/pub.dev/google_sign_in_android-6.1.23/
 google_sign_in_ios=/Users/lee/.pub-cache/hosted/pub.dev/google_sign_in_ios-5.7.7/
