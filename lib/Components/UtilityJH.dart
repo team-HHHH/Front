@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:scheduler/Components/KakaoMapService.dart';
+import 'package:scheduler/Components/kakaoMap.dart';
 
 import '../ConfigJH.dart';
 
 // Custom GestureDetector with Row
-Widget profileNaviBar(String text, String gotos) {
+Widget profileNaviBar(String text, dynamic gotos) {
   return GestureDetector(
     onTap: () {
-      debugPrint("$gotos으로 이동");
+      Get.to(gotos);
     },
     child: Container(
       width: double.infinity, // 화면 가로 길이 전체
@@ -84,7 +87,7 @@ AppBar topBar(String text, String gotoUrl) {
   );
 }
 
-AppBar topBarDefault(String text, String buttonName, String gotoUrl) {
+AppBar topBarDefault(String text, String buttonName, dynamic page) {
   return AppBar(
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1.0), // 구분선의 두께
@@ -95,7 +98,9 @@ AppBar topBarDefault(String text, String buttonName, String gotoUrl) {
         ),
       ),
       leading: IconButton(
-        onPressed: () {},
+        onPressed: () {
+          Get.back();
+        },
         icon: const Icon(
           Icons.arrow_back,
           size: 20,
@@ -110,7 +115,9 @@ AppBar topBarDefault(String text, String buttonName, String gotoUrl) {
           )),
       actions: <Widget>[
         TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.to(page);
+            },
             child: Text(
               buttonName,
               style: const TextStyle(
@@ -146,12 +153,12 @@ Widget keyValueText(String key, String value) {
   );
 }
 
-Widget grayTextButton(String name, String url) {
+Widget grayTextButton(String name, dynamic func) {
   return SizedBox(
     height: 35,
     child: TextButton(
       onPressed: () {
-        debugPrint(url);
+        func.run();
       },
       style: TextButton.styleFrom(
         padding: EdgeInsets.zero,
@@ -240,8 +247,35 @@ Widget grayInputLongWithSearch(
                     Icons.search,
                     color: Color(SSU_BLUE),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     debugPrint("web view");
+
+                    final coordinates =
+                        await getCoordinatesFromAddress("서울 특별시");
+                    if (coordinates != null) {
+                      double latitude =
+                          coordinates['latitude']!; // Map에서 위도 가져오기
+                      double longitude =
+                          coordinates['longitude']!; // Map에서 경도 가져오기
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => KakaoMapPage(
+                              /*
+                            latitude: latitude,
+                            longitude: longitude,
+                            */
+                              ),
+                        ),
+                      );
+                    }
+                    /*
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => KakaoMapPage()),
+                    );
+                    */
                     //showAddressSearchDialog(context);
                   }))));
 }

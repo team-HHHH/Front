@@ -1,8 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:scheduler/Controllers/token_controller.dart';
+import 'package:scheduler/Controllers/userInfo_controller.dart';
+import 'package:scheduler/Controllers/logout_controller.dart';
+import 'package:scheduler/Screens/login_screen.dart';
+import 'package:scheduler/Screens/passwordEdit_screen.dart';
+import 'package:scheduler/Screens/profileEdit_screen.dart';
 import '../Components/UtilityJH.dart';
 import '../ConfigJH.dart';
 
@@ -14,16 +20,40 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final userCont = Get.put(UserinfoController());
+  final logoutCont = Get.put(LogoutController());
+
   String _userImg = "assets/images/DefaultProfile.png";
 
-  String _userNickName = "준혁이형 후계자";
+  String _userNickName = "로딩 중...";
   String _userEmail = "baejh724@gmail.com";
   String _userAddr = "서울 강남구 봉은사 5길";
 
   @override
+  void initState() {
+    super.initState();
+    _loadUserInfo();
+  }
+
+  Future<void> _loadUserInfo() async {
+    // 여기서 사용자 정보를 초기화
+    await userCont.getUserInfo();
+    setState(() {
+      _userNickName = userCont.nickname;
+      _userEmail = userCont.email;
+      _userAddr = userCont.address;
+
+      var profileImg = userCont.profileImg;
+      if (profileImg != "temp::image") {
+        profileImg = userCont.profileImg;
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topBarDefault("회원정보 수정", "수정", "준혁이형 뭐하노 url"),
+      appBar: topBarDefault("회원정보 수정", "수정", const ProfileEditScreen()),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
         child: Column(
@@ -84,7 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 10,
             ), //Margin
             //구분 선 두는겨
-            profileNaviBar("비밀번호 변경", "/change/password"),
+            profileNaviBar("비밀번호 변경", const PasswordEditScreen()),
 
             /************* 부가정보  *************/
 
@@ -93,8 +123,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ), //Margin
 
             dividerBar(),
-            grayTextButton("로그아웃", "/logout"),
-            grayTextButton("회원탈퇴", "/delete"),
+            grayTextButton("로그아웃", logoutCont),
+            grayTextButton("회원탈퇴", () {}),
           ],
         ),
       ),

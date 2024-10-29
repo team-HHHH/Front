@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:get/get.dart';
 import 'package:scheduler/Components/ApiHelper.dart';
+import 'package:scheduler/ConfigJH.dart';
 
 class RegisterController extends GetxController {
   var enteredId = "".obs;
@@ -38,8 +39,8 @@ class RegisterController extends GetxController {
   }
 
   String getIdMessage() {
-    if (enteredId.value.length < 8 || enteredId.value.length > 16) {
-      return "아이디는 8자이상 16자이하입니다.";
+    if (enteredId.value.length < 4 || enteredId.value.length > 16) {
+      return "아이디는 4자이상 16자이하입니다.";
     }
     // 정규 표현식: 숫자와 영어만 포함되고 특수문자는 없음
     final RegExp regex = RegExp(r'^[a-zA-Z0-9]+$');
@@ -58,11 +59,11 @@ class RegisterController extends GetxController {
   }
 
   String getPasswordMessage() {
-    if (enteredPassword.value.length < 8 ||
+    if (enteredPassword.value.length < 4 ||
         enteredPassword.value.length > 16 ||
-        enteredPassword2.value.length < 8 ||
+        enteredPassword2.value.length < 4 ||
         enteredPassword2.value.length > 16) {
-      return "비밀번호는 8자이상 16자이하입니다.";
+      return "비밀번호는 4자이상 16자이하입니다.";
     }
 
     if (enteredPassword.value != enteredPassword2.value) {
@@ -90,7 +91,7 @@ class RegisterController extends GetxController {
 
   // ID 중복확인 버튼 터치 시
   void handleCheckId() async {
-    final url = Uri.http("10.21.20.18:8080", "users/check/id");
+    final url = Uri.http(SERVER_DOMAIN, "users/check/id");
     final response = await http.post(
       url,
       headers: {
@@ -117,7 +118,7 @@ class RegisterController extends GetxController {
 
   // Email 인증하기 버튼 터치 시
   void handleReciveCode() async {
-    final url = Uri.http("10.21.20.18:8080", "users/check/email");
+    final url = Uri.http(SERVER_DOMAIN, "users/check/email");
     final response = await http.post(
       url,
       headers: {
@@ -161,7 +162,7 @@ class RegisterController extends GetxController {
 
   // Email 인증 버튼 터치 시
   void handleCheckCode() async {
-    final url = Uri.http("10.21.20.18:8080", "users/check/emailcode");
+    final url = Uri.http(SERVER_DOMAIN, "users/check/emailcode");
     final response = await http.post(
       url,
       headers: {
@@ -191,7 +192,7 @@ class RegisterController extends GetxController {
 
   // 계속하기 버튼 터치 시
   void handleNext() async {
-    final url = Uri.http("10.21.20.18:8080", "/users/register");
+    final url = Uri.http(SERVER_DOMAIN, "/users/register");
     final response = await http.post(
       url,
       headers: {

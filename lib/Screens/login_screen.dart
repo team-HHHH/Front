@@ -140,7 +140,7 @@ class LoginScreen extends StatelessWidget {
                   height: 40,
                   child: TextButton(
                     onPressed: () {
-                      loginController.handleLogin();
+                      loginController.handleLogin(context);
                     },
                     style: TextButton.styleFrom(
                       splashFactory: NoSplash.splashFactory,

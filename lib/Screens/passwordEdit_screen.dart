@@ -1,8 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:scheduler/Components/ButtonContainer.dart';
+import 'package:scheduler/Controllers/register_controller.dart';
+import 'package:scheduler/Controllers/userEdit_controller.dart';
+import 'package:scheduler/Controllers/userInfo_controller.dart';
 
 import '../Components/UtilityJH.dart';
 import '../ConfigJH.dart';
@@ -15,6 +19,9 @@ class PasswordEditScreen extends StatefulWidget {
 }
 
 class _PasswordEditScreenState extends State<PasswordEditScreen> {
+  final registerCont = Get.put(RegisterController());
+  final changeCont = Get.put(UserChangeController());
+
   final _formKey = GlobalKey<FormState>(); // Form 위젯을 위해 사용.
   final TextEditingController _originpw = TextEditingController();
   final TextEditingController _newpw1 = TextEditingController();
@@ -156,6 +163,11 @@ class _PasswordEditScreenState extends State<PasswordEditScreen> {
               height: 40,
               child: TextButton(
                 onPressed: () {
+                  if (_passwordsMatch && _input_not_empty) {
+                    changeCont.setOriginPw(_originpw.text);
+                    changeCont.setNewPw(_newpw1.text);
+                    changeCont.changeUserPasswd(context);
+                  }
                   //_formKey.currentState!.save();
                 },
                 style: TextButton.styleFrom(

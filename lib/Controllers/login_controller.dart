@@ -1,11 +1,17 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:scheduler/Components/Alert.dart';
 import 'package:scheduler/Components/ApiHelper.dart';
 
 import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_story.dart';
+import 'package:scheduler/ConfigJH.dart';
+import 'package:scheduler/Controllers/token_controller.dart';
+import 'package:scheduler/Screens/login_screen.dart';
+import 'package:scheduler/Screens/profile_screen.dart';
 import 'package:scheduler/Screens/register_detail_screen.dart';
 import 'package:scheduler/Screens/register_screen.dart';
 
@@ -15,6 +21,7 @@ import 'package:scheduler/Screens/register_screen.dart';
 // 2) 카카오 로그인 클릭 시
 // 3) 구글 로그인 클릭 시
 class LoginController extends GetxController {
+  final TokenController tokenController = Get.put(TokenController());
   var enteredId = ''.obs;
   var enteredPassword = ''.obs;
 
@@ -27,8 +34,8 @@ class LoginController extends GetxController {
   }
 
   // 로그인 버튼 누를 시 수행.
-  void handleLogin() async {
-    final url = Uri.http("54.180.244.145:8080", "users/login/custom");
+  void handleLogin(BuildContext context) async {
+    final url = Uri.http(SERVER_DOMAIN, "users/login/custom");
     final response = await http.post(
       url,
       headers: {
@@ -47,10 +54,29 @@ class LoginController extends GetxController {
     final resultCode = responseData.getResultCode();
     final resultMessage = responseData.getResultMessage();
     print(resultMessage);
-    if (resultCode != 200) return;
+
+    /// 2024.10.29 JH --> Modifiy Region
+    if (resultCode == 202) {
+      showAlertDialog(context, "비밀번호가 틀렸습니다", LoginScreen());
+      return;
+    } else if (resultCode != 200) return;
 
     final isFirstLogin =
-        responseData.getBodyValue("isFirstLogin").toString() == "true";
+        responseData.getBodyValueOne("firstLogin").toString() == "true";
+
+    final accessToken = response.headers["authorization"];
+    final refreshToken = response.headers["refresh"];
+
+    print(accessToken);
+    tokenController.setAccessToken(accessToken.toString());
+    tokenController.setRefreshToken(refreshToken.toString());
+    if (isFirstLogin) {
+      print("초기 로그인");
+    }
+
+    //// Debugging
+
+    Get.to(const ProfileScreen());
   }
 
   void handleRegister() {

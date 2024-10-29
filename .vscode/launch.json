@@ -1,0 +1,17 @@
+{
+    "configurations": [
+      {
+        "name": "Flutter Web (CORS Disabled)",
+        "request": "launch",
+        "type": "dart",
+        "flutterMode": "debug",
+        "program": "lib/main.dart",
+        "args": [
+          "-d", "chrome",
+          "--web-browser-flag=--disable-web-security",
+          "--web-browser-flag=--user-data-dir=/tmp/chrome_dev_test"
+        ]
+      }
+    ]
+  }
+  

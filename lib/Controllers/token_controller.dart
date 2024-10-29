@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:scheduler/Components/ApiHelper.dart';
+import 'package:scheduler/ConfigJH.dart';
+import 'package:http/http.dart' as http;
 
 class TokenController extends GetxController {
   final GetStorage _storage = GetStorage(); // GetStorage 인스턴스
@@ -33,5 +36,24 @@ class TokenController extends GetxController {
     refreshToken.value = '';
     _storage.remove('access_token'); // access token 삭제
     _storage.remove('refresh_token'); // refresh token 삭제
+  }
+
+  Future<void> reissue() async {
+    final url = Uri.http(SERVER_DOMAIN, "users/reissue");
+    final response = await http.post(url, headers: {
+      'Content-Type': 'application/json',
+      "Authorization": accessToken.toString(),
+      "Refresh": "Bearer " + refreshToken.toString()
+    });
+
+    if (response.statusCode != 200) return;
+
+    final responseData = ApiHelper(response.body);
+    final resultCode = responseData.getResultCode();
+    final resultMessage = responseData.getResultMessage();
+    print(resultMessage);
+    if (resultCode != 200) return;
+
+    this.setAccessToken(response.headers["Authorization"].toString());
   }
 }

@@ -30,5 +30,10 @@ class ApiHelper {
 
   dynamic getBodyValue(String key) {
     final Map<String, dynamic> body = _getBody()[key];
+    return body;
+  }
+
+  dynamic getBodyValueOne(String key) {
+    return _getBody()[key];
   }
 }
