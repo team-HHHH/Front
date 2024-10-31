@@ -64,7 +64,7 @@ class _BlueButtonState extends State<BlueButton> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25.0),
                     side: const BorderSide(
-                      color: Color(SSU_BLUE), // 버튼 테두리 색상
+                      color: SSU_BLUE, // 버튼 테두리 색상
                       width: 1.0, // 버튼 테두리 두께
                     ),
                   ),
@@ -74,7 +74,7 @@ class _BlueButtonState extends State<BlueButton> {
                     widget.buttonName,
                     style: const TextStyle(
                         fontSize: 13, // 텍스트 크기
-                        color: Color(SSU_BLUE)),
+                        color: SSU_BLUE),
                   ),
                 ),
               ),
@@ -176,7 +176,7 @@ class _BlueButtonEmailState extends State<BlueButtonEmail> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25.0),
                     side: const BorderSide(
-                      color: Color(SSU_BLUE), // 버튼 테두리 색상
+                      color: SSU_BLUE, // 버튼 테두리 색상
                       width: 1.0, // 버튼 테두리 두께
                     ),
                   ),
@@ -186,7 +186,7 @@ class _BlueButtonEmailState extends State<BlueButtonEmail> {
                     widget.buttonName,
                     style: const TextStyle(
                         fontSize: 13, // 텍스트 크기
-                        color: Color(SSU_BLUE)),
+                        color: SSU_BLUE),
                   ),
                 ),
               ),

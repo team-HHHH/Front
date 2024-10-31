@@ -60,7 +60,7 @@ class _MypageScreenState extends State<MypageScreen> {
                           _userEmail,
                           style: const TextStyle(
                             fontSize: 14,
-                            color: Color(GRAY),
+                            color: GRAY,
                             fontWeight: FontWeight.normal,
                           ),
                         ),
@@ -68,7 +68,7 @@ class _MypageScreenState extends State<MypageScreen> {
                     ),
                     const Icon(
                       Icons.arrow_forward_ios,
-                      color: Color(SSU_BLUE),
+                      color: SSU_BLUE,
                     )
                   ],
                 ),

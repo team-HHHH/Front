@@ -28,7 +28,7 @@ Widget profileNaviBar(String text, dynamic gotos) {
           ),
           const Icon(
             Icons.arrow_forward_ios,
-            color: Color(GRAY),
+            color: GRAY,
             size: 14,
           )
         ],
@@ -67,7 +67,7 @@ AppBar topBar(String text, String gotoUrl) {
           child: Text(
             text,
             style: const TextStyle(
-              color: Color(SSU_BLUE),
+              color: SSU_BLUE,
               fontSize: 14,
               fontWeight: FontWeight.bold,
             ),
@@ -81,13 +81,14 @@ AppBar topBar(String text, String gotoUrl) {
           onPressed: () {
             debugPrint(gotoUrl);
           },
-          icon: const Icon(Icons.search, color: Color(SSU_BLUE))),
+          icon: const Icon(Icons.search, color: SSU_BLUE)),
       const SizedBox(width: 14),
     ],
   );
 }
 
 AppBar topBarDefault(String text, String buttonName, dynamic page) {
+  print("클릭됨");
   return AppBar(
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1.0), // 구분선의 두께
@@ -104,7 +105,7 @@ AppBar topBarDefault(String text, String buttonName, dynamic page) {
         icon: const Icon(
           Icons.arrow_back,
           size: 20,
-          color: Color(SSU_BLUE),
+          color: SSU_BLUE,
         ),
       ),
       title: Text(text,
@@ -121,7 +122,7 @@ AppBar topBarDefault(String text, String buttonName, dynamic page) {
             child: Text(
               buttonName,
               style: const TextStyle(
-                color: Color(SSU_BLUE),
+                color: SSU_BLUE,
                 fontWeight: FontWeight.bold,
                 fontSize: 12,
               ),
@@ -145,7 +146,7 @@ Widget keyValueText(String key, String value) {
         value,
         style: const TextStyle(
           fontSize: 13,
-          color: Color(GRAY),
+          color: GRAY,
           fontWeight: FontWeight.normal,
         ),
       )
@@ -168,7 +169,7 @@ Widget grayTextButton(String name, dynamic func) {
         name,
         style: const TextStyle(
           fontSize: 13, // 폰트 크기
-          color: Color(GRAY), // 텍스트 색상
+          color: GRAY, // 텍스트 색상
         ),
       ),
     ),
@@ -245,7 +246,7 @@ Widget grayInputLongWithSearch(
               suffixIcon: IconButton(
                   icon: const Icon(
                     Icons.search,
-                    color: Color(SSU_BLUE),
+                    color: SSU_BLUE,
                   ),
                   onPressed: () async {
                     debugPrint("web view");
