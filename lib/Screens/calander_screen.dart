@@ -42,10 +42,6 @@ class _CalanderScreenState extends State<CalanderScreen> {
   @override
   void initState() {
     super.initState();
-
-    ///test
-    calanderCont.Dummy();
-
     // calanderCont.fetchData();
 
     calanderCont.calCalender(calanderCont.year, calanderCont.month);

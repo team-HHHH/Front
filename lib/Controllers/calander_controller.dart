@@ -33,6 +33,7 @@ class CalanderController extends GetxController {
     DateTime now = DateTime.now();
     year = now.year;
     month = now.month;
+    fetchDataByDate(year, month);
   }
 
   List<List<int>> viewDays = [
@@ -70,8 +71,7 @@ class CalanderController extends GetxController {
       url,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization':
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsInVzZXJJZCI6MSwicm9sZSI6Im1lbWJlciIsImlhdCI6MTczMDcxNDkxOCwiZXhwIjoxNzMwNzE1NTE4fQ.DrsRuwmgGam4ia_uCwlUdv78tL7mkAE7fAKcEuC6-Go"
+        'Authorization': ACCESS_TOKEN,
       },
       body: jsonEncode(
         {
@@ -116,8 +116,7 @@ class CalanderController extends GetxController {
       url,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization':
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsInVzZXJJZCI6MSwicm9sZSI6Im1lbWJlciIsImlhdCI6MTczMDcxNDkxOCwiZXhwIjoxNzMwNzE1NTE4fQ.DrsRuwmgGam4ia_uCwlUdv78tL7mkAE7fAKcEuC6-Go"
+        'Authorization': ACCESS_TOKEN,
       },
     );
     if (response.statusCode != 200) return;
@@ -248,8 +247,7 @@ class CalanderController extends GetxController {
       url,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization':
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsInVzZXJJZCI6MSwicm9sZSI6Im1lbWJlciIsImlhdCI6MTczMDcwODI1MiwiZXhwIjoxNzMwNzA4ODUyfQ.jRsX3lPlGLvjuf5QyhKpvM8ZLc2-cEeaUIauSNUoa4k"
+        'Authorization': ACCESS_TOKEN,
       },
     );
     if (response.statusCode != 200) return;
@@ -261,6 +259,44 @@ class CalanderController extends GetxController {
     if (resultCode != 200) return;
   }
 
+  // 캘린더 데이터 fetch 함수.
+  // 년, 월을 기준으로 불러옴.
+  void fetchDataByDate(int year, int month) async {
+    // 쿼리 파라미터 추가
+    final Uri url =
+        Uri.parse("http://$SERVER_DOMAIN/calenders").replace(queryParameters: {
+      'year': year.toString(),
+      'month': month.toString(),
+    });
+
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': ACCESS_TOKEN,
+    });
+    if (response.statusCode != 200) return;
+
+    final responseData = ApiHelper(response.body);
+    print(responseData.responseData);
+    final resultCode = responseData.getResultCode();
+    if (resultCode != 200) return;
+
+    final tagNodes = responseData.getBody();
+    List<TagNode> list = List<TagNode>.from(
+        (tagNodes as List).map((item) => TagNode.fromJson(item)));
+
+    tagMap.clear();
+    for (final tagNode in list) {
+      final year = tagNode.timeDetail.year;
+      final month = tagNode.timeDetail.month;
+      final day = tagNode.timeDetail.day;
+      final title = tagNode.title;
+      final content = tagNode.content;
+
+      addTag(year, month, day, title, content);
+    }
+    print("조회 성공");
+  }
+
   void monthDown() {
     if (month == 1) {
       year--;
@@ -269,6 +305,7 @@ class CalanderController extends GetxController {
     if (month == 0) {
       month = 12;
     }
+    fetchDataByDate(year, month);
   }
 
   void monthUp() {
@@ -279,6 +316,7 @@ class CalanderController extends GetxController {
     if (month == 13) {
       month = 1;
     }
+    fetchDataByDate(year, month);
   }
 
   void calCalender(int y, int m) {

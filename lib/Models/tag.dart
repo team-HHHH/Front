@@ -12,4 +12,14 @@ class TagNode {
     required this.tag,
     required this.sid,
   });
+
+  factory TagNode.fromJson(Map<String, dynamic> json) {
+    return TagNode(
+      title: json['title'],
+      content: json['content'],
+      timeDetail: DateTime.parse(json['startDay']),
+      tag: 0,
+      sid: json['calenderId'],
+    );
+  }
 }
