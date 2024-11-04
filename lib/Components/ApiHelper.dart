@@ -36,4 +36,8 @@ class ApiHelper {
   dynamic getBodyValueOne(String key) {
     return _getBody()[key];
   }
+
+  dynamic getBody() {
+    return responseData['body'];
+  }
 }

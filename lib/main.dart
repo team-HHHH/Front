@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color.fromARGB(255, 96, 193, 195),
         useMaterial3: true,
       ),
-      home: CalanderScreen(),
+      home: const CalanderScreen(),
       //home: const MainScreen(),
       //home: LoginScreen(),
       //home: ProfileScreen(),

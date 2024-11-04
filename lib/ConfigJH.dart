@@ -8,7 +8,7 @@ const Color CALANDER_TEXT_GRAY = Color(0xFF585757);
 const Color RED = Color(0xFFEA1B1B);
 
 //const String SERVER_DOMAIN = "10.0.2.2:8080"; //for android localhost
-const String SERVER_DOMAIN = "localhost:8080"; //for android localhost
+const String SERVER_DOMAIN = "3.36.57.137:8080"; //for android localhost
 
 class StringPointer {
   String value;
